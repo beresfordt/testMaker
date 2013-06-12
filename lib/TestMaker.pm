@@ -29,9 +29,11 @@ sub _wanted {
 }
 
 sub checkForModules {
+
     # to require a module from a variable name we need to do some mucking about to
     # translate from :: to /
     for my $module (qw/Test::Class Test::More Class::Data::Inheritable/) {
+
         # Foo::Bar::Baz => Foo/Bar/Baz.pm
         (my $fn = "$module.pm") =~ s|::|/|g;
         eval {
@@ -58,7 +60,7 @@ sub _makeRunFile {
     my $runfile = 't/run.t';
     return if -f $runfile;
     open(my $fh, '>', $runfile);
-    print $fh TestMaker::RunFile->fileData();;
+    print $fh TestMaker::RunFile->fileData();
 }
 
 sub _makeMyTestClass {

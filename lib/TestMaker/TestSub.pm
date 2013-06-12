@@ -34,10 +34,10 @@ sub testSubName {
     if (defined $subName) {
         chomp($subName);
         die "Bad subName" unless $self->_validateSubName($subName);
-        if($subName eq 'new') {
+        if ($subName eq 'new') {
             $self->{testSubName} = 'constructor';
         }
-        else{
+        else {
             $self->{testSubName} = $subName;
         }
     }
@@ -47,17 +47,17 @@ sub testSubName {
 sub _validateSubName {
     my ($self, $subName) = @_;
 
-    unless(defined $subName){
+    unless (defined $subName) {
         warn "Invalid subName: Not defined";
         return 0;
     }
 
-    unless($subName){
+    unless ($subName) {
         warn "Invalid subName: $subName does not evalute to true";
         return 0;
     }
 
-    if($subName eq 'sub'){
+    if ($subName eq 'sub') {
         warn "Invalid subName: cannot use subName sub";
         return 0;
     }

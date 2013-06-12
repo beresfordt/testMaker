@@ -32,22 +32,22 @@ sub libPath {
 sub _validateLibPath {
     my ($self, $libPath) = @_;
 
-    unless(defined $libPath){
+    unless (defined $libPath) {
         warn "Invalid libPath: Not defined";
         return 0;
     }
 
-    unless($libPath){
+    unless ($libPath) {
         warn "Invalid libPath: $libPath does not evalute to true";
         return 0;
     }
 
-    unless(-f $libPath){
+    unless (-f $libPath) {
         warn "Invalid libPath: $libPath not a regular file";
         return 0;
     }
 
-    unless(-r $libPath){
+    unless (-r $libPath) {
         warn "Invalid libPath: $libPath cannot be read from";
         return 0;
     }
@@ -95,7 +95,7 @@ sub _testFile {
 sub _makeTestFileContent {
     my ($self) = @_;
 
-    my $content         = $self->_header();
+    my $content = $self->_header();
 
     open(my $libfh, '<', $self->libPath());
 
