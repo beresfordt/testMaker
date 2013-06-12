@@ -2,7 +2,7 @@ package Test::TestMaker::RunFile;
 
 use strict;
 use base 'My::Test::Class';
-use Test::More;
+use Test::Most;
 
 sub fileData : Tests() {
     my $test = shift;

@@ -2,7 +2,7 @@ package Test::TestMaker::TestSub;
 
 use strict;
 use base 'My::Test::Class';
-use Test::More;
+use Test::Most;
 
 sub constructor : Tests() {
     my $test = shift;

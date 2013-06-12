@@ -1,6 +1,6 @@
 package My::Test::Class;
 
-use Test::More;
+use Test::Most;
 use base qw<Test::Class Class::Data::Inheritable>;
 
 BEGIN {
