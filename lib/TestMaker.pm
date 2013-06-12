@@ -1,20 +1,32 @@
-#!/usr/bin/env perl
+package TestMaker;
+
+# ABSTRACT: Create test class classes from your existing lib/
 
 use strict;
 use warnings;
 use autodie;
 use File::Path qw(make_path);
 use File::Find;
-use Getopt::Std;
+use TestMaker::MyTestClass;
+use TestMaker::RunFile;
+use TestMaker::TestClass;
 
-my $opts = {};
-getopts('f', $opts);
+sub new {
+    my $class = shift;
+    return bless {}, $class;
+}
 
-checkForModules() unless $opts->{f};
+sub createTests {
+    find({wanted => \&_wanted, no_chdir => 1}, 'lib');
+}
 
-createTestBase();
+sub _wanted {
+    my $path = $File::Find::name;
+    return unless -f $path;
 
-find({wanted => \&wanted, no_chdir => 1}, 'lib');
+    my $testClass = TestMaker::TestClass->new({libPath => $path});
+    $testClass->makeTestFile();
+}
 
 sub checkForModules {
     # to require a module from a variable name we need to do some mucking about to
@@ -38,137 +50,27 @@ sub createTestBase {
     make_path('t')               unless -d 't';
     make_path('t/tests/My/Test') unless -d 't/tests/My/Test';
 
-    makeRunFile();
-    makeMyTestClass();
+    _makeRunFile();
+    _makeMyTestClass();
 }
 
-sub makeRunFile {
+sub _makeRunFile {
     my $runfile = 't/run.t';
     return if -f $runfile;
-
     open(my $fh, '>', $runfile);
-    print $fh '#!/usr/bin/env perl
-
-use Test::Class::Load qw<t/tests>;
-Test::Class->runtests;';
+    print $fh TestMaker::RunFile->fileData();;
 }
 
-sub makeMyTestClass {
+sub _makeMyTestClass {
     my $testClass = 't/tests/My/Test/Class.pm';
     return if -f $testClass;
-
-    local $" = '';
     open(my $fh, '>', $testClass);
-    my @content = <DATA>;
-    print $fh "@content";
+    print $fh TestMaker::MyTestClass->fileData();
 }
 
-sub wanted {
-    my $path = $File::Find::name;
-    return unless -f $path;
-
-    makeTestDir($path);
-    makeTestFile($path);
-}
-
-sub makeTestDir {
-    my ($libFile) = @_;
-
-    my $testDir = testDir($libFile);
-    make_path($testDir) unless -d $testDir;
-}
-
-sub testDir {
-    my ($libFile) = @_;
-
-    $libFile =~ s/\.pm//;
-    $libFile =~ s!lib/!t/tests/Test/!;
-    $libFile =~ s!(.*)/\w+$!$1!;
-    return $libFile;
-}
-
-sub makeTestFile {
-    my ($libFile) = @_;
-
-    my $testFilePath = testDir($libFile) . "/" . testFile($libFile);
-    return if -e $testFilePath;
-
-    my $content = makeTestFileContent($libFile);
-
-    open(my $testFH, '>', $testFilePath);
-    print $testFH $content;
-}
-
-sub testFile {
-    my ($libFile) = @_;
-
-    $libFile =~ s!.*/(\w+\.pm)$!$1!;
-    return $libFile;
-}
-
-sub makeTestFileContent {
-    my ($libFile) = @_;
-
-    my $testPackageName = testPackageName($libFile);
-    my $content         = header($testPackageName);
-
-    open(my $libfh, '<', $libFile);
-
-    while (<$libfh>) {
-        next unless $_ =~ /^\s*sub /;
-        $content .= testSub($_);
-    }
-    $content .= "1;\n";
-
-    return $content;
-}
-
-sub testPackageName {
-    my ($libFile) = @_;
-
-    $libFile =~ s/\.pm//;
-    $libFile =~ s!lib/(.*)!Test::$1!;
-    $libFile =~ s!/!::!g;
-    return $libFile;
-}
-
-sub header {
-    my ($package) = @_;
-
-    return "package $package;
-
-use strict;
-use base 'My::Test::Class';
-use Test::Most;
-
-";
-}
-
-sub testSub {
-    my ($sub) = @_;
-
-    chomp($sub);
-    $sub =~ s/\s*sub\s*(.*?) .*/$1/;
-
-    next unless $sub;
-
-    $sub = 'constructor' if $sub eq 'new';
-
-    my $subDef = "sub $sub : Tests() {
-    my \$test = shift;
-
-    can_ok(\$test->class(), '$sub');
-}
-
-";
-    return $subDef;
-}
+1;
 
 =pod
-
-=head1 NAME
-
-testMaker.pl
 
 =head1 SYNOPSIS
 
@@ -256,45 +158,9 @@ L<Test::More>
 
 L<Test::Most>
 
-=head1 VERSION
-
-version 1.1
-
 =head1 ACKNOWLEDGEMENTS
 
 Based on the excellent tutorial on Test::Class by Curtis "Ovid" Poe,
 <ovid at cpan.org> L<found here|http://www.modernperlbooks.com/mt/2009/03/organizing-test-suites-with-testclass.html>
 
-=head1 AUTHOR
-
-Tom Beresford <me at tomberesford dot co dot uk>
-
-=head1 COPYRIGHT AND LICENSE
-
-Copyright 2013 Tom Beresford, All Rights Reserved.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
 =cut
-
-__DATA__
-package My::Test::Class;
-
-use Test::More;
-use base qw<Test::Class Class::Data::Inheritable>;
-
-BEGIN {
-    __PACKAGE__->mk_classdata('class');
-}
-
-sub startup : Tests( startup => 1 ) {
-    my $test = shift;
-
-    (my $class = ref $test) =~ s/^Test:://;
-    return ok 1, "$class loaded" if $class eq __PACKAGE__;
-    use_ok $class or die;
-    $test->class($class);
-}
-
-1;
