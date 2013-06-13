@@ -24,7 +24,7 @@ sub new {
 sub libPath {
     my ($self, $libPath) = @_;
 
-    if (defined $libPath) {
+    if (@_ > 1) {
         die "Bad libPath" unless $self->_validateLibPath($libPath);
         $self->{libPath} = $libPath;
     }
