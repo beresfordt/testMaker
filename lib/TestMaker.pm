@@ -144,9 +144,6 @@ C<testMaker.pl -f>
 
 =head1 CAVEATS
 
-It currently does not play nicely with subs which have prototypes, L<which
-you probably shouldn't be using anyway!|http://www.perlmonks.org/?node_id=861966>
-
 It currently does not filter out any sub definitions which are contained
 within pod sections of your class, and probably never will.
 

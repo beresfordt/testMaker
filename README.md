@@ -67,8 +67,6 @@ installed. To go ahead and run the script anyway use the -f flag:
 
 # CAVEATS
 
-It currently does not play nicely with subs which have prototypes, [which you probably shouldn't be using anyway!](http://www.perlmonks.org/?node\_id=861966)
-
 It currently does not filter out any sub definitions which are contained
 within pod sections of your class, and probably never will.
 
