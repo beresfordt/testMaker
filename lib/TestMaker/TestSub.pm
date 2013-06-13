@@ -22,9 +22,9 @@ sub new {
 sub subName {
     my ($self, $subName) = @_;
 
-    if (defined $subName) {
-        chomp($subName);
+    if (@_ > 1) {
         die "Bad subName" unless $self->_validateSubName($subName);
+        chomp($subName);
         $self->{subName} = $subName;
     }
     return $self->{subName};
@@ -33,9 +33,9 @@ sub subName {
 sub testSubName {
     my ($self, $subName) = @_;
 
-    if (defined $subName) {
-        chomp($subName);
+    if (@_ > 1) {
         die "Bad subName" unless $self->_validateSubName($subName);
+        chomp($subName);
         if ($subName eq 'new') {
             $self->{testSubName} = 'constructor';
         }
