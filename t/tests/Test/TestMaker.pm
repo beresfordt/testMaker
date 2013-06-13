@@ -16,10 +16,10 @@ sub createTests : Tests() {
 
     can_ok($test->class(), 'createTests');
 
-    TODO: {
+  TODO: {
         local $TODO = 'Refactor to make this testable';
-        ok(0)
-    };
+        ok(0);
+    }
 }
 
 sub _wanted : Tests() {
@@ -27,10 +27,10 @@ sub _wanted : Tests() {
 
     can_ok($test->class(), '_wanted');
 
-    TODO: {
+  TODO: {
         local $TODO = 'Refactor to make this testable';
-        ok(0)
-    };
+        ok(0);
+    }
 }
 
 sub checkForModules : Tests() {
@@ -38,10 +38,10 @@ sub checkForModules : Tests() {
 
     can_ok($test->class(), 'checkForModules');
 
-    TODO: {
+  TODO: {
         local $TODO = 'Refactor to make this testable';
-        ok(0)
-    };
+        ok(0);
+    }
 }
 
 sub createTestBase : Tests() {
@@ -49,10 +49,10 @@ sub createTestBase : Tests() {
 
     can_ok($test->class(), 'createTestBase');
 
-    TODO: {
+  TODO: {
         local $TODO = 'Refactor to make this testable';
-        ok(0)
-    };
+        ok(0);
+    }
 }
 
 sub _makeRunFile : Tests() {
@@ -60,10 +60,10 @@ sub _makeRunFile : Tests() {
 
     can_ok($test->class(), '_makeRunFile');
 
-    TODO: {
+  TODO: {
         local $TODO = 'Refactor to make this testable';
-        ok(0)
-    };
+        ok(0);
+    }
 }
 
 sub _makeMyTestClass : Tests() {
@@ -71,10 +71,10 @@ sub _makeMyTestClass : Tests() {
 
     can_ok($test->class(), '_makeMyTestClass');
 
-    TODO: {
+  TODO: {
         local $TODO = 'Refactor to make this testable';
-        ok(0)
-    };
+        ok(0);
+    }
 }
 
 1;

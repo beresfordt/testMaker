@@ -10,20 +10,24 @@ sub constructor : Tests() {
     can_ok($test->class(), 'new');
 
     dies_ok {
-        $test->class->new()
-    } '.... dies with libPath arg';
+        $test->class->new();
+    }
+    '.... dies with libPath arg';
 
     dies_ok {
-        $test->class->new({libPath => undef})
-    } '.... dies with libPath undef';
+        $test->class->new({libPath => undef});
+    }
+    '.... dies with libPath undef';
 
     dies_ok {
-        $test->class->new({libPath => 'new'})
-    } '.... dies with libPath not valid file';
+        $test->class->new({libPath => 'new'});
+    }
+    '.... dies with libPath not valid file';
 
     lives_ok {
-        $test->testClassFactory()
-    } '.... lives with libPath as real file';
+        $test->testClassFactory();
+    }
+    '.... lives with libPath as real file';
 }
 
 sub libPath : Tests() {
@@ -35,11 +39,13 @@ sub libPath : Tests() {
     is($testClass->libPath(), 'lib/TestMaker.pm', '.... we return the expected libPath after construction');
 
     dies_ok {
-        $testClass->libPath(undef)
-    } '.... dies if we try and set libPath to undef';
+        $testClass->libPath(undef);
+    }
+    '.... dies if we try and set libPath to undef';
 
     $testClass->libPath('lib/TestMaker/TestSub.pm');
-    is($testClass->libPath(), 'lib/TestMaker/TestSub.pm', '.... we return the expected libPath after changing it');
+    is($testClass->libPath(), 'lib/TestMaker/TestSub.pm',
+        '.... we return the expected libPath after changing it');
 }
 
 sub _validateLibPath : Tests() {
@@ -48,15 +54,16 @@ sub _validateLibPath : Tests() {
     can_ok($test->class(), '_validateLibPath');
 
     my $testClass = $test->testClassFactory();
-    is($testClass->_validateLibPath(), 0, '.... returns 0 when called with no arg');
-    is($testClass->_validateLibPath(undef), 0, '.... returns 0 when called with undef arg');
-    is($testClass->_validateLibPath(0), 0, '.... returns 0 when called with arg 0');
+    is($testClass->_validateLibPath(),       0, '.... returns 0 when called with no arg');
+    is($testClass->_validateLibPath(undef),  0, '.... returns 0 when called with undef arg');
+    is($testClass->_validateLibPath(0),      0, '.... returns 0 when called with arg 0');
     is($testClass->_validateLibPath('lib/'), 0, '.... returns 0 when called with a directory');
 
-    TODO: {
+  TODO: {
         local $TODO = 'Work out how to test on file we dont have read access on';
-        is($testClass->_validateLibPath('blah'), 0, '.... returns 0 when called with a file we dont have read access on');
-    };
+        is($testClass->_validateLibPath('blah'),
+            0, '.... returns 0 when called with a file we dont have read access on');
+    }
 }
 
 sub makeTestFile : Tests() {
@@ -64,10 +71,10 @@ sub makeTestFile : Tests() {
 
     can_ok($test->class(), 'makeTestFile');
 
-    TODO: {
+  TODO: {
         local $TODO = 'Refactor to make this testable';
-        ok(0)
-    };
+        ok(0);
+    }
 }
 
 sub _testFilePath : Tests() {
@@ -86,10 +93,10 @@ sub _makeTestDir : Tests() {
 
     can_ok($test->class(), '_makeTestDir');
 
-    TODO: {
+  TODO: {
         local $TODO = 'Refactor to make this testable';
-        ok(0)
-    };
+        ok(0);
+    }
 }
 
 sub _testDir : Tests() {
@@ -119,10 +126,10 @@ sub _makeTestFileContent : Tests() {
 
     can_ok($test->class(), '_makeTestFileContent');
 
-    TODO: {
+  TODO: {
         local $TODO = 'Refactor to make this testable';
-        ok(0)
-    };
+        ok(0);
+    }
 }
 
 sub _tidySubName : Tests() {
@@ -131,9 +138,9 @@ sub _tidySubName : Tests() {
     can_ok($test->class(), '_tidySubName');
 
     my $testClass = $test->testClassFactory('lib/TestMaker.pm');
-    is($testClass->_tidySubName(' sub    blah   {'), 'blah', '.... well spaced tidied');
-    is($testClass->_tidySubName(' sub    __blah   {'), '__blah', '.... underscored sub tidied');
-    is($testClass->_tidySubName(' sub    blah($$$$$)   {'), 'blah', '.... prototyped sub tidied');
+    is($testClass->_tidySubName(' sub    blah   {'),        'blah',   '.... well spaced tidied');
+    is($testClass->_tidySubName(' sub    __blah   {'),      '__blah', '.... underscored sub tidied');
+    is($testClass->_tidySubName(' sub    blah($$$$$)   {'), 'blah',   '.... prototyped sub tidied');
 }
 
 sub _testPackageName : Tests() {
@@ -144,7 +151,8 @@ sub _testPackageName : Tests() {
     my $testClass = $test->testClassFactory('lib/TestMaker.pm');
     is($testClass->_testPackageName(), 'Test::TestMaker', '.... converted lib/TestMaker.pm correctly');
     $testClass->libPath('lib/TestMaker/RunFile.pm');
-    is($testClass->_testPackageName(), 'Test::TestMaker::RunFile', '.... converted lib/TestMaker/RunFile.pm correctly');
+    is($testClass->_testPackageName(),
+        'Test::TestMaker::RunFile', '.... converted lib/TestMaker/RunFile.pm correctly');
 }
 
 sub _header : Tests() {
