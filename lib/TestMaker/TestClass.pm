@@ -1,5 +1,7 @@
 package TestMaker::TestClass;
 
+# ABSTRACT: Class to generate test classes
+
 use strict;
 use warnings;
 use autodie;

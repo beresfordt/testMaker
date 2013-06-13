@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
 # ABSTRACT: Create test class classes from your existing lib/
+# PODNAME: testMaker
 
 use lib 'lib/';
 

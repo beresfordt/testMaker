@@ -1,5 +1,7 @@
 package TestMaker::MyTestClass;
 
+# ABSTRACT: Class to hold custom base test class definition
+
 use strict;
 
 sub fileData {

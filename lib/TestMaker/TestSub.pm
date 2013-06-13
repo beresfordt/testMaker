@@ -1,5 +1,7 @@
 package TestMaker::TestSub;
 
+# ABSTRACT: Class to generate test sub definitions
+
 use strict;
 use warnings;
 
