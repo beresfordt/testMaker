@@ -1,0 +1,21 @@
+#!/usr/bin/env perl
+
+# ABSTRACT: Create test class classes from your existing lib/
+# PODNAME: testMaker
+
+use lib 'lib/';
+
+use strict;
+use warnings;
+use Getopt::Std;
+use TestMaker;
+
+my $opts = {};
+getopts('ft', $opts);
+
+my $maker = TestMaker->new();
+
+$maker->checkForModules() unless $opts->{f};
+$maker->createTestBase() unless $opts->{t};
+
+$maker->createTests();
