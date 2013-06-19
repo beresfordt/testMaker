@@ -76,7 +76,7 @@ sub _makeMyTestClass {
 
 =head1 SYNOPSIS
 
-./testMaker.pl
+testMaker
 
 To be run in base dir of project
 

@@ -8,7 +8,7 @@ version 1.1
 
 # SYNOPSIS
 
-./testMaker.pl
+testMaker
 
 To be run in base dir of project
 
