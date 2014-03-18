@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/beresfordt/testMaker.png?branch=master)](https://travis-ci.org/beresfordt/testMaker)
+
 # NAME
 
 TestMaker - Create test class classes from your existing lib/
